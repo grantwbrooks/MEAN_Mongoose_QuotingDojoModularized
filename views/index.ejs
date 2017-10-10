@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>All the Fish</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+    <div>
+        
+        <% if(typeof(fishData) != 'undefined' ) { %>
+            <h3>Here are the awesome Fish!</h3>
+            <% for (var x in fishData) { %>
+                <a href="/fishes/<%= fishData[x]._id %>"><h4>Fish Name: <%= fishData[x].name %></h4></a>
+                <a href="/fishes/edit/<%= fishData[x]._id %>">Edit</a>
+                <form action="/fishes/destroy/<%= fishData[x]._id %>" method="post">
+                    <input type='submit' value='Delete This Fish'>
+                </form>
+                
+                <!-- <h4>Fish Length: <%= fishData[x].length %></h4> -->
+            <hr>
+            <% } %>
+        <% } %>
+        <a href="/fishes">Create a new Fish!</a>
+        
+    </div>
+
+    <div>
+        <% if(typeof(errors) != 'undefined' ) { %>
+            <h3>Here are the un-awesome errors!</h3>
+            <% for (var x in errors) { %>
+             <h3><%= errors[x].message %></h3>
+            <% } %>
+        <% } %>
+    </div>
+</body>
+</html>
