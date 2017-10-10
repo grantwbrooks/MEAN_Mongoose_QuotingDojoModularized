@@ -77,9 +77,8 @@ app.get('/fishes', function(req,res) {
 // POST for a new fish
 app.post('/fishes', function(req, res) {
     console.log("POST DATA", req.body);
-    var fishy = new Fish(req.body);
     // Try to save that new user to the database (this is the method that actually inserts into the db) and run a callback function with an error (if any) from the operation.
-    fishy.save(function(err) {
+    Fish.create(req.body, function(err, fishy) {
         // if there is an error console.log that something went wrong!
         if(err) {
             console.log('something went wrong saving user');
@@ -126,20 +125,33 @@ app.get('/fishes/edit/:id', function(req, res) {
 app.post('/fishes/edit/:id', function(req, res) {
     console.log("POST DATA-----", req.body);
     console.log("ID", req.params.id);
-    Fish.findOne({_id:req.params.id}, function(err, fishy) {
-        fishy.name = req.body.name;
-        fishy.length = req.body.length;
-        fishy.save(function(err){
-            if(err) {
-                console.log('something went wrong saving user');
-                console.log(fishy.errors);
-                res.render('/', {errors: fishy.errors});
-            } else { // else console.log that we did well and then redirect to the root route
-                console.log('successfully updated a fish!');
-                res.redirect('/');
-            }
-        })    
+    // Fish.findOne({_id:req.params.id}, function(err, fishy) {
+    //     fishy.name = req.body.name;
+    //     fishy.length = req.body.length;
+    //     fishy.save(function(err){
+    //         if(err) {
+    //             console.log('something went wrong saving user');
+    //             console.log(fishy.errors);
+    //             res.render('/', {errors: fishy.errors});
+    //         } else { // else console.log that we did well and then redirect to the root route
+    //             console.log('successfully updated a fish!');
+    //             res.redirect('/');
+    //         }
+    //     })    
+    // })
+// try another way with update method instead:
+    Fish.update({_id:req.params.id}, req.body, function(err, fishy) {
+        if(err) {
+            console.log('something went wrong saving user');
+            console.log(fishy.errors);
+            res.render('/', {errors: fishy.errors});
+        } else { // else console.log that we did well and then redirect to the root route
+            console.log('successfully updated a fish!');
+            res.redirect('/');
+        }
     })
+
+
 })
 
 // POST with id to delete a fish
